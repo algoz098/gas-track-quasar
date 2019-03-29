@@ -2,8 +2,8 @@
   <q-layout view="lHh Lpr lFf">
     <q-layout-header>
       <q-toolbar
-        color="primary"
-        :glossy="$q.theme === 'mat'"
+        :color="isNight ? 'dark' : 'primary'"
+        
         :inverted="$q.theme === 'ios'"
       >
         <q-btn
@@ -31,7 +31,7 @@
         >
           <q-icon name="clear_all" />
         </q-btn>
-
+<!-- 
         <q-btn
           flat
           dense
@@ -41,11 +41,24 @@
           to="/tracks/new"
         >
           <q-icon name="add" />
-        </q-btn>
+        </q-btn> -->
       </q-toolbar>
     </q-layout-header>
 
-    <q-page-container>
+    <q-page-sticky position="bottom-right" :offset="[32, 32]" style="z-index: 1" >
+      <q-btn
+          round
+          size="lg"
+          aria-label="add"
+          v-if="$route.path == '/'"
+          to="/tracks/new"
+          :color="isNight ? 'dark' : 'primary'"
+        >
+          <q-icon name="add" />
+        </q-btn>
+    </q-page-sticky>
+
+    <q-page-container :class="{'bg-black': isNight}">
       <transition
         name="transitions"
         enter-active-class="animated slideInRight"
@@ -60,6 +73,7 @@
 
 <script>
 import { openURL } from 'quasar'
+import { date } from 'quasar'
 
 export default {
   name: 'MyLayout',
@@ -70,7 +84,8 @@ export default {
   },
 
   created(){
-    this.$store.dispatch('fuel/get')
+    
+    this.$store.dispatch('fuel/starting')
   },
   
   methods: {
@@ -78,6 +93,12 @@ export default {
   },
 
   computed:{
+    isNight(){
+      var now = new Date();
+      var formated = parseInt(date.formatDate(now, 'H'))
+      return (formated > 18 || formated < 7 )
+    },
+
     title(){
       if(this.$route.path == '/') return 'Gas Track Quasar'
 

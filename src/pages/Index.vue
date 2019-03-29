@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center" v-if="!fuels.length">
     <q-btn 
-      color="primary" 
+      :color="isNight ? 'dark' : 'primary'"
       label="CREATE FIRST TRACK" 
       to="/tracks/new"
     />
@@ -25,8 +25,8 @@
         <q-item-side >
             <q-item-main :label="`KMs: ${item.km_actual}`" :sublabel="`Lts add: ${item.lts_add}`" />
         </q-item-side>
-
-        <q-item-main :label="`KM/LT: ${item.km_lt ? item.km_lt : '-IND-'}`" />
+ 
+        <q-item-main :label="`KM/LT: ${item.km_lt ? item.km_lt : '-'}`" />
 
         <q-item-side right>
             <q-item-main :label="`Total: $${item.total}`" :sublabel="`When: ${formatDate(item.date)}`" />
@@ -82,22 +82,27 @@ export default {
   },
 
   computed:{
+    isNight(){
+      var now = new Date();
+      var formated = parseInt(date.formatDate(now, 'H'))
+      return (formated > 18 || formated < 7 )
+    },
+    
     total_effectness(){
       if(!this.fuels.length) return 0
 
-      return (this.fuels.filter(e => e.km_lt).map(e => e.km_lt).reduce((a, b) => a+b, 0)).toFixed(2)
+      return (this.fuels.filter(e => e.km_lt).map(e => e.km_lt).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)) / this.fuels.filter(e => e.km_lt).length
     },
 
     total_wheeled(){
       if(!this.fuels.length) return 0
-
-      return (this.fuels.filter(e => e.wheeled).map(e => e.wheeled).reduce((a, b) => a+b, 0)).toFixed(2)
+      return (this.fuels.filter(e => e.wheeled).map(e => e.wheeled).reduce((a, b) => parseFloat(a) + parseFloat(b), 0))
     },
 
     total_lts(){
       if(!this.fuels.length) return 0
 
-      return (this.fuels.filter(e => e.lts_add).map(e => parseFloat(e.lts_add)).reduce((a, b) => a+b, 0)).toFixed(2)
+      return (this.fuels.filter(e => e.lts_add).map(e => parseFloat(e.lts_add)).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)).toFixed(2)
     },
 
     fuels(){
@@ -110,3 +115,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.bg-black,
+.bg-black .q-input-target, .bg-black .q-input-shadow{
+  color: gray!important;
+}
+</style>

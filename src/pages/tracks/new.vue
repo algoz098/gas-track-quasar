@@ -23,13 +23,14 @@
       </q-field>
 
       <q-field>
-        <q-btn :label="index != undefined ? 'Save!' : 'Create!'" class="full-width" color="primary" @click="submit" />
+        <q-btn :label="index != undefined ? 'Save!' : 'Create!'" class="full-width" :color="isNight ? 'dark' : 'primary'" @click="submit" />
       </q-field>
     </div>
   </q-page>
 </template>
 
 <script>
+import { date } from 'quasar'
 
 export default {
   name: 'tracks-new',
@@ -37,6 +38,8 @@ export default {
   data(){
     return{
       form:{
+        id: null,
+        saved: null,
         km_actual: '',
         lts_add: '',
         price: '',
@@ -71,6 +74,7 @@ export default {
         this.form.total       = this.fuels[this.index].total
         this.form.km_lt       = this.fuels[this.index].km_lt
         this.form.wheeled     = this.fuels[this.index].wheeled
+        this.form.id     = this.fuels[this.index].id
       } else {
         this.load()
       }
@@ -88,7 +92,7 @@ export default {
         var last_wheeled    = this.fuels[this.fuels.length - 2].wheeled
         
         if(last_wheeled){
-          this.form.km_actual = parseFloat(parseFloat(this.fuels[this.fuels.length - 1].km_actual) + last_wheeled)
+          this.form.km_actual = parseFloat(parseFloat(this.fuels[this.fuels.length - 1].km_actual) + parseFloat(last_wheeled))
         }
       }
       
@@ -137,6 +141,12 @@ export default {
   },
 
   computed:{
+    isNight(){
+      var now = new Date();
+      var formated = parseInt(date.formatDate(now, 'H'))
+      return (formated > 18 || formated < 7 )
+    },
+
     fuels(){
       return this.$store.state.fuel.data
     },

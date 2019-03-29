@@ -36,6 +36,9 @@ module.exports = function (ctx) {
     // framework: 'all' --- includes everything; for dev only!
     framework: {
       components: [
+        'QFab',
+        'QFabAction',
+        'QPageSticky',
         'QDatetime',
         'QLayout',
         'QInput',
