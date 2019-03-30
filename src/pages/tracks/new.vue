@@ -1,25 +1,51 @@
 <template>
-  <q-page class="docs-input row justify-center" v-touch-swipe.left="swipe">
+  <q-page class="docs-input row justify-center" v-touch-swipe.mouse.left.right="swipe">
     <div style="width: 500px; max-width: 90vw;">
-      <q-field>
-        <q-input type="tel" float-label="Actual Car KM..." v-model="form.km_actual" />
+      <q-field
+        class="full-width q-my-md"
+      >
+        <q-input 
+        type="tel" label="Actual Car KM..." v-model="form.km_actual" />
+      </q-field>
+
+      <q-field
+        class="full-width q-my-md"
+      >
+        <q-input 
+        type="tel" label="Fuel lts add..." v-money="lts" v-model="form.lts_add" />
+      </q-field>
+
+      <q-field
+        class="full-width q-my-md"
+      >
+        <q-input 
+        type="tel" label="Price..."  v-money="lts" v-model="form.price" />
+      </q-field>
+
+      <q-field
+          class="full-width q-my-md"
+      >
+        <q-input 
+          label="Total:" readonly v-model="form.total" />
       </q-field>
 
       <q-field>
-        <q-input type="tel" float-label="Fuel lts add..." v-money="lts" v-model="form.lts_add" />
-      </q-field>
-
-      <q-field>
-        <q-input type="tel" float-label="Price..."  v-money="lts" v-model="form.price" />
-      </q-field>
-
-      <q-field>
-        <q-input float-label="Total:" readonly v-model="form.total" />
-      </q-field>
-
-      <q-field>
-        <q-datetime float-label="When" type="datetime" 
-        format="HH:mm DD/MM/YYYY" v-model="form.date" />
+        <q-input 
+          filled 
+          class="full-width q-my-md"
+          :value="form.date" 
+          @click.prevent="showDate = true"
+          @keydown.prevent
+          label="When"
+        >
+          <template v-slot:append>
+            <q-icon name="event" >
+              <q-popup-proxy :value="showDate" @hide="showDate = false">
+                <q-date v-model="dateComputed"  minimal/>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
       </q-field>
 
       <q-field>
@@ -48,6 +74,8 @@ export default {
         km_lt: '',
         wheeled: '',
       },
+
+      showDate: false,
       
       lts: {
         decimal: ',',
@@ -82,6 +110,7 @@ export default {
 
   methods:{
     swipe(){
+      console.log("ae")
       this.$router.push('/')
     },
 
@@ -141,6 +170,17 @@ export default {
   },
 
   computed:{
+    dateComputed:{
+      get(){
+        return date.formatDate(this.form.date, 'YYYY/MM/DD')
+      },
+
+      set(e){
+        var data = new Date(e)
+        this.form.date = data
+      }
+    },
+
     isNight(){
       var now = new Date();
       var formated = parseInt(date.formatDate(now, 'H'))

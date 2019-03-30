@@ -3,7 +3,7 @@
 module.exports = function (ctx) {
   return {
     // app plugins (/src/plugins)
-    plugins: [
+    boot: [
       'axios',
       'vmoney'
     ],
@@ -11,11 +11,10 @@ module.exports = function (ctx) {
       'app.styl'
     ],
     extras: [
-      ctx.theme.mat ? 'roboto-font' : null,
       'material-icons' // optional, you are not bound to it
-      // 'ionicons',
-      // 'mdi',
-      // 'fontawesome'
+      // 'ionicons-v4',
+      // 'mdi-v3',
+      // 'fontawesome-v5'
     ],
     supportIE: false,
     build: {
@@ -36,16 +35,16 @@ module.exports = function (ctx) {
     // framework: 'all' --- includes everything; for dev only!
     framework: {
       components: [
+        'QPopupProxy',
         'QFab',
         'QFabAction',
         'QPageSticky',
-        'QDatetime',
+        'QDate',
         'QLayout',
         'QInput',
         'QField',
-        'QDatetimePicker',
-        'QLayoutHeader',
-        'QLayoutDrawer',
+        'QHeader',
+        'QDrawer',
         'QPageContainer',
         'QPage',
         'QToolbar',
@@ -53,11 +52,10 @@ module.exports = function (ctx) {
         'QBtn',
         'QIcon',
         'QList',
-        'QListHeader',
+        'QItemLabel',
         'QItem',
-        'QItemSeparator',
-        'QItemMain',
-        'QItemSide'
+        'QSeparator',
+        'QItemSection'
       ],
       directives: [
         'Ripple',
@@ -65,12 +63,11 @@ module.exports = function (ctx) {
       ],
       // Quasar plugins
       plugins: [
-        'ActionSheet',
+        'BottomSheet',
         'LocalStorage',
         'Notify',
       ]
-      // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
-      // i18n: 'de' // Quasar language
+      // lang: 'de' // Quasar language
     },
     // animations: 'all' --- includes all animations
     animations: [

@@ -3,7 +3,7 @@ import { uid as uidF } from 'quasar'
 import axios from 'axios';
 
 const uid = (function(){
-    var uid = $ls.get.item('uid')
+    var uid = $ls.getItem('uid')
 
     if(!uid) {
         uid = uidF()
@@ -70,7 +70,7 @@ export const saveRemote = async (store, data) => {
 export const getToken = async (store) => {
     axios.defaults.headers.common['Authorization'] = uid;
     
-    var token = $ls.get.item('api_token')
+    var token = $ls.getItem('api_token')
 
     if(!token) token = await store.dispatch('generateToken')
 
@@ -95,7 +95,7 @@ export const generateToken = async (store) => {
 };
 
 export const get = async (store) => {
-    var a = await $ls.get.item('fuels')
+    var a = await $ls.getItem('fuels')
 
     a = JSON.parse(a)
 
@@ -105,7 +105,7 @@ export const get = async (store) => {
 };
 
 export const save = async (store, form) => {
-    var data = JSON.parse($ls.get.item('fuels'))
+    var data = JSON.parse($ls.getItem('fuels'))
 
     if(!data ){
         console.log('negação')
@@ -157,7 +157,7 @@ export const remove = async (store, obj) => {
     data = await store.dispatch('removeRemote', data[obj.index].id)
 
     if(!data) {
-        data = JSON.parse(await $ls.get.item('fuels'))
+        data = JSON.parse(await $ls.getItem('fuels'))
     
         data.splice(obj.index, 1);
     }

@@ -7,30 +7,40 @@
     />
   </q-page>
 
-  <q-page v-touch-swipe.left="swipe" v-else>
-    <q-list highlight inset-separator>
-      <q-list-header>Tracks</q-list-header>
+  <q-page v-touch-swipe.mouse.left.right="swipe" v-else>
+    <q-list bordered padding>
+      <q-item-label header>Your track list</q-item-label>
 
       <q-item >
-        <q-item-side>
-            <q-item-main :label="`Spend: $${total_lts}`" :sublabel="`Wheeled: ${total_wheeled}km`" />
-        </q-item-side>
-
-        <q-item-side right>
-            <q-item-main :label="`Effectness: ${total_effectness}km/lt`" />
-        </q-item-side>
+        <q-item-section>
+          <q-item-label>Lts Total: {{total_lts}}</q-item-label>
+          <q-item-label >Wheeled: {{total_wheeled}}Kms</q-item-label>
+        </q-item-section>
+        
+        <q-item-section side top>
+            <q-item-label>
+              Effectness: {{total_effectness}}km/lt
+            </q-item-label>
+        </q-item-section>
       </q-item>
-      
-      <q-item @click.native="action(index)" v-for="(item, index) in fuels" :key="index" >
-        <q-item-side >
-            <q-item-main :label="`KMs: ${item.km_actual}`" :sublabel="`Lts add: ${item.lts_add}`" />
-        </q-item-side>
- 
-        <q-item-main :label="`KM/LT: ${item.km_lt ? item.km_lt : '-'}`" />
 
-        <q-item-side right>
-            <q-item-main :label="`Total: $${item.total}`" :sublabel="`When: ${formatDate(item.date)}`" />
-        </q-item-side>
+      <q-separator spaced />
+
+      <q-item 
+        clickable 
+        v-ripple
+        @click.native="action(index)" 
+        v-for="(item, index) in fuels" 
+        :key="index" 
+      >
+        <q-item-section>
+          <q-item-label>${{item.total}} on {{formatDate(item.date)}}</q-item-label>
+          <q-item-label caption lines="2">at {{item.km_actual}}kms add {{item.lts_add}}Lts</q-item-label>
+        </q-item-section>
+
+        <q-item-section side top>
+          <q-item-label caption v-if="item.km_lt">{{item.km_lt}} km/lt</q-item-label>
+        </q-item-section>
       </q-item>
     </q-list>
   </q-page>
@@ -46,8 +56,8 @@ export default {
   name: 'PageIndex',
 
   methods:{
-    async action(index){
-      await this.$q.actionSheet({
+    action(index){
+      this.$q.bottomSheet({
         title: 'What u doin?',
 
         actions: [
@@ -68,8 +78,14 @@ export default {
               this.$router.push({path: '/tracks/new', query: {index: index}})
             }
           },
-        ]
-      })
+        ],
+
+        
+      }).onOk(this.actionOk)
+    },
+
+    actionOk(data){
+      data.handler()
     },
 
     swipe(){
@@ -90,8 +106,9 @@ export default {
     
     total_effectness(){
       if(!this.fuels.length) return 0
+      if(!this.fuels.filter(e => e.km_lt).length) return 0
 
-      return (this.fuels.filter(e => e.km_lt).map(e => e.km_lt).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)) / this.fuels.filter(e => e.km_lt).length
+      return ((this.fuels.filter(e => e.km_lt).map(e => e.km_lt).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)) / this.fuels.filter(e => e.km_lt).length).toFixed(2)
     },
 
     total_wheeled(){

@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-layout-header>
+    <q-header>
       <q-toolbar
         :color="isNight ? 'dark' : 'primary'"
         
@@ -43,7 +43,7 @@
           <q-icon name="add" />
         </q-btn> -->
       </q-toolbar>
-    </q-layout-header>
+    </q-header>
 
     <q-page-sticky position="bottom-right" :offset="[32, 32]" style="z-index: 1" >
       <q-btn
