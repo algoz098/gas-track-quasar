@@ -174,7 +174,7 @@ export default {
     },
 
     async submit(){
-      if(this.fuels.length && this.fuels[this.fuels.length - 1]){
+      if(this.fuels && this.fuels.length && this.fuels[this.fuels.length - 1]){
         var index = this.fuels.length - 1
 
         if(this.index) index = this.index - 1

@@ -3,8 +3,6 @@
     <q-header>
       <q-toolbar
         :class="isNight ? 'bg-blue-grey-10 text-white' : 'bg-primary'"
-        
-        :inverted="$q.theme === 'ios'"
       >
         <q-btn
           flat
@@ -26,22 +24,12 @@
           dense
           round
           aria-label="clear"
-          @click="$store.dispatch('fuel/clear')"
+          @click="askToClear"
           v-if="$route.path == '/'"
         >
           <q-icon name="clear_all" />
         </q-btn>
-<!-- 
-        <q-btn
-          flat
-          dense
-          round
-          aria-label="add"
-          v-if="$route.path == '/'"
-          to="/tracks/new"
-        >
-          <q-icon name="add" />
-        </q-btn> -->
+        
       </q-toolbar>
     </q-header>
 
@@ -80,7 +68,7 @@ export default {
   name: 'MyLayout',
   data () {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      carouselHome: true
     }
   },
 
@@ -90,7 +78,20 @@ export default {
   },
   
   methods: {
-    openURL
+    askToClear(){
+      this.$q.dialog({
+        title: 'Are you certain?',
+        message: 'This will clear the tracks you have, but just in you device',
+      
+        cancel: {
+          color: 'negative'
+        },
+        
+        persistent: true
+      }).onOk(() => {
+        this.$store.dispatch('fuel/clear')
+      })
+    },
   },
 
   computed:{

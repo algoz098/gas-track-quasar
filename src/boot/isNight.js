@@ -9,7 +9,7 @@ export default ({ Vue }) => {
         // return true
         var now = new Date();
         var formated = parseInt(date.formatDate(now, 'H'))
-        return (formated > 18 || formated < 7 )
+        return (formated >= 18 || formated <= 7 )
       },
     }
   })

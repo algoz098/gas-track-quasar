@@ -130,8 +130,6 @@ export const save = async (store, form) => {
 
     await $ls.set('fuels', JSON.stringify(data))
     
-    $nt.create('Track saved!')
-
     store.commit('set', data)
 
     store.dispatch('saveRemote', data)

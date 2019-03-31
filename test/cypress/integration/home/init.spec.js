@@ -5,18 +5,18 @@ describe('Landing', () => {
     // cy.visit('/')
   })
 
-  it('.should() - assert that <title> is correct', () => {
+  it('assert that <title> is correct', () => {
     cy.visit('/')
     cy.title().should('include', 'Gas Track Quasar')
   })
 
-  it('.should() - show "create first track"', () => {
+  it('show "create first track"', () => {
     cy.get('#create-first-track').click()
 
     cy.get('#save-btn').contains('Create!')
   })
 
-  it('.should() - be able to add new track', () => {
+  it('be able to add new track', () => {
     cy.visit('/#/tracks/new')
     cy.get('#km_actual input').type('100')
     cy.get('#lts_add input').type('10')
@@ -29,7 +29,7 @@ describe('Landing', () => {
     cy.get('#create-first-track').should('not.be.visible')
   })
 
-  it('.should() - calculate total', () => {
+  it('calculate total', () => {
     cy.visit('/')
 
     cy.get('#add-track-btn').click()
@@ -57,7 +57,7 @@ describe('Landing', () => {
     cy.get('#create-first-track').should('not.be.visible')
   })
 
-  it('.should() - delete items', () => {
+  it('delete items', () => {
     cy.visit('/')
 
     cy.get('#add-track-btn').click()
@@ -74,7 +74,7 @@ describe('Landing', () => {
 
   })
 
-  it('.should() - edit itens', () => {
+  it('edit itens', () => {
     cy.visit('/')
 
     cy.get('#add-track-btn').click()
@@ -86,6 +86,7 @@ describe('Landing', () => {
     cy.wait(300)
 
     cy.get('#track_0').click()
+    cy.wait(300)
     cy.get('.q-item__section').contains('Edit this').click()
     cy.get('#km_actual input').clear().type('200')
     cy.get('#save-btn').click()

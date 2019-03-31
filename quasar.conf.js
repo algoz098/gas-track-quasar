@@ -66,6 +66,7 @@ module.exports = function (ctx) {
       plugins: [
         'BottomSheet',
         'LocalStorage',
+        'Dialog',
         'Notify',
       ]
       // lang: 'de' // Quasar language
