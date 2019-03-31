@@ -1,6 +1,12 @@
-import { LocalStorage as $ls } from 'quasar'
-import { uid as uidF } from 'quasar'
+import { 
+    LocalStorage as $ls,
+    uid as uidF,
+    Notify as $nt
+} from 'quasar'
+
 import axios from 'axios';
+
+var navigator = {connection: {type: 'wi-fi'}}
 
 const uid = (function(){
     var uid = $ls.getItem('uid')
@@ -20,7 +26,7 @@ export const starting = async (store) => {
 
     store.dispatch('saveRemote', tracks)
 
-    if(!tracks) await store.dispatch('getRemote')
+    if(!tracks) store.dispatch('getRemote')
 
 };
 
@@ -28,6 +34,8 @@ export const getRemote = async (store) => {
     var response = await axios.get(`${store.state.endpoint}gas-track`)
 
     if(!response.data.length) return null
+
+    $ls.set('fuels', JSON.stringify(response.data))
     
     store.commit('set', response.data)
 
@@ -42,6 +50,8 @@ export const removeRemote = async (store, id) => {
     try {
         await axios.get(`${store.state.endpoint}gas-track/${id}/delete`)
         var data = await store.dispatch('getRemote')
+        
+        $nt.create('Removed from cloud')
     } catch (error) {
         return null
     }
@@ -57,7 +67,10 @@ export const saveRemote = async (store, data) => {
     try {
         await axios.post(`${store.state.endpoint}gas-track/save`, data.filter(e => !e.saved))
         
+        if (data.filter(e => !e.saved).length) $nt.create('Saved to cloud')
+
         data.filter(e => !e.saved).forEach(e => {
+            
             e.saved = 'true'
         });
         
@@ -87,6 +100,8 @@ export const generateToken = async (store) => {
         var response = await axios.get(`${store.state.endpoint}auto-register`)
         
         $ls.set('api_token', response.data.api_token)
+
+        $nt.create('You got a cloud token, welcome!')
         
         return response.data.api_token
     } catch (error) {
@@ -108,24 +123,18 @@ export const save = async (store, form) => {
     var data = JSON.parse($ls.getItem('fuels'))
 
     if(!data ){
-        console.log('negação')
         data = []
-
-    } else if(data.length){
-        data[data.length-1].saved = null
-        data[data.length-1].wheeled = parseFloat((parseFloat(form.km_actual) - parseFloat(data[data.length-1].km_actual)).toFixed(2))
-        data[data.length-1].km_lt = parseFloat((data[data.length-1].wheeled / parseFloat(form.lts_add)).toFixed(2))
-    }
+    } 
 
     data = [...data, form]
 
-    data = await store.dispatch('saveRemote', data);
-
     await $ls.set('fuels', JSON.stringify(data))
-
-    var data = await store.dispatch('get');
+    
+    $nt.create('Track saved!')
 
     store.commit('set', data)
+
+    store.dispatch('saveRemote', data)
 
     return data
 };
@@ -135,7 +144,7 @@ export const update = async (store, data) => {
 
     state[data.index] = data.form
 
-    await store.dispatch('saveRemote', state)
+    store.dispatch('saveRemote', state)
 
     await $ls.set('fuels', JSON.stringify(state))
 

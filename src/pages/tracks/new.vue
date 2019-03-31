@@ -73,6 +73,7 @@
 
 <script>
 import { date } from 'quasar'
+import {  LocalStorage as $ls } from 'quasar'
 
 export default {
   name: 'tracks-new',
@@ -173,6 +174,22 @@ export default {
     },
 
     async submit(){
+      if(this.fuels.length && this.fuels[this.fuels.length - 1]){
+        var index = this.fuels.length - 1
+
+        if(this.index) index = this.index - 1
+
+        var copy = JSON.parse(JSON.stringify(this.fuels))
+
+        copy[index].saved = null
+        copy[index].wheeled = parseFloat((parseFloat(this.form.km_actual) - parseFloat(copy[index].km_actual)).toFixed(2))
+        copy[index].km_lt = parseFloat((copy[index].wheeled / parseFloat(this.form.lts_add.replace(',', '.'))).toFixed(2))
+        
+        await $ls.set('fuels', JSON.stringify(copy))
+        
+        this.$store.commit('fuel/set', copy)
+      }
+
       if(this.index != undefined){
         await this.$store.dispatch('fuel/update', {form: this.form, index: this.index})
 
