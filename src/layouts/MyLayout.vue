@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header>
       <q-toolbar
-        :color="isNight ? 'dark' : 'primary'"
+        :class="isNight ? 'bg-blue-grey-10 text-white' : 'bg-primary'"
         
         :inverted="$q.theme === 'ios'"
       >
@@ -48,10 +48,12 @@
     <q-page-sticky position="bottom-right" :offset="[32, 32]" style="z-index: 1" >
       <q-btn
           round
+          id="add-track-btn"
           size="lg"
           aria-label="add"
           v-if="$route.path == '/'"
           to="/tracks/new"
+          :dark="isNight"
           :color="isNight ? 'dark' : 'primary'"
         >
           <q-icon name="add" />

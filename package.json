@@ -18,6 +18,8 @@
   "devDependencies": {
     "@babel/preset-stage-2": "^7.0.0",
     "@quasar/app": "^1.0.0-beta.14",
+    "@quasar/quasar-app-extension-testing": "^1.0.0-rc.5",
+    "@quasar/quasar-app-extension-testing-e2e-cypress": "^1.0.0-beta.6",
     "connectivity": "^1.0.1",
     "strip-ansi": "=3.0.1",
     "v-money": "^0.8.1"

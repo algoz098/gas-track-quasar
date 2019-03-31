@@ -1,6 +1,7 @@
 <template>
   <q-page class="flex flex-center" v-if="!fuels.length">
     <q-btn 
+      id="create-first-track"
       :color="isNight ? 'dark' : 'primary'"
       label="CREATE FIRST TRACK" 
       to="/tracks/new"
@@ -32,6 +33,7 @@
         @click.native="action(index)" 
         v-for="(item, index) in fuels" 
         :key="index" 
+        :id="`track_${index}`"
       >
         <q-item-section>
           <q-item-label>${{item.total}} on {{formatDate(item.date)}}</q-item-label>
@@ -64,6 +66,7 @@ export default {
           {
             label: 'Delete this',
             color: 'negative',
+            id: 'delete-this',
             icon: 'delete', // specify ONLY IF using icon
             handler: () =>  {
               this.$store.dispatch('fuel/remove', {index: index})

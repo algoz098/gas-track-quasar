@@ -5,6 +5,7 @@
         class="full-width q-my-md"
       >
         <q-input 
+        id="km_actual"
         type="tel" label="Actual Car KM..." v-model="form.km_actual" />
       </q-field>
 
@@ -12,21 +13,21 @@
         class="full-width q-my-md"
       >
         <q-input 
-        type="tel" label="Fuel lts add..." v-money="lts" v-model="form.lts_add" />
+        type="tel" label="Fuel lts add..." v-money="lts" v-model="form.lts_add" id="lts_add" />
       </q-field>
 
       <q-field
         class="full-width q-my-md"
       >
         <q-input 
-        type="tel" label="Price..."  v-money="lts" v-model="form.price" />
+        type="tel" label="Price..."  v-money="lts" v-model="form.price" id="price" />
       </q-field>
 
       <q-field
           class="full-width q-my-md"
       >
         <q-input 
-          label="Total:" readonly v-model="form.total" />
+          label="Total:" readonly v-model="form.total" id="total" />
       </q-field>
 
       <q-field>
@@ -49,7 +50,13 @@
       </q-field>
 
       <q-field>
-        <q-btn :label="index != undefined ? 'Save!' : 'Create!'" class="full-width" :color="isNight ? 'dark' : 'primary'" @click="submit" />
+        <q-btn 
+          :label="index != undefined ? 'Save!' : 'Create!'" 
+          class="full-width" 
+          :color="isNight ? 'dark' : 'primary'" 
+          @click="submit" 
+          id="save-btn"
+        />
       </q-field>
     </div>
   </q-page>
