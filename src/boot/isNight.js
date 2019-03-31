@@ -5,7 +5,7 @@ export default ({ Vue }) => {
   Vue.mixin({
     computed:{
       isNight(){
-        return false
+        // return false
         // return true
         var now = new Date();
         var formated = parseInt(date.formatDate(now, 'H'))

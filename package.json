@@ -1,6 +1,6 @@
 {
   "name": "gas-track-quasar",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A gas spend tracking app in quasar",
   "productName": "Gas Track Quasar",
   "cordovaId": "br.com.webgs.gastrackquasar",
