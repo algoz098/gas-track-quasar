@@ -2,6 +2,7 @@
   <q-page class="docs-input row justify-center" v-touch-swipe.mouse.left.right="swipe">
     <div style="width: 500px; max-width: 90vw;">
       <q-field
+        :dark="isNight"
         class="full-width q-my-md"
       >
         <q-input 
@@ -10,6 +11,7 @@
       </q-field>
 
       <q-field
+        :dark="isNight"
         class="full-width q-my-md"
       >
         <q-input 
@@ -17,6 +19,7 @@
       </q-field>
 
       <q-field
+        :dark="isNight"
         class="full-width q-my-md"
       >
         <q-input 
@@ -24,16 +27,20 @@
       </q-field>
 
       <q-field
+        :dark="isNight"
           class="full-width q-my-md"
       >
         <q-input 
           label="Total:" readonly v-model="form.total" id="total" />
       </q-field>
 
-      <q-field>
+      <q-field
+        class="q-my-md"
+        :dark="isNight"
+      >
         <q-input 
           filled 
-          class="full-width q-my-md"
+          class="full-width "
           :value="form.date" 
           @click.prevent="showDate = true"
           @keydown.prevent
@@ -42,7 +49,9 @@
           <template v-slot:append>
             <q-icon name="event" >
               <q-popup-proxy :value="showDate" @hide="showDate = false">
-                <q-date v-model="dateComputed"  minimal/>
+                <q-date v-model="dateComputed"
+                  :dark="isNight"
+                  minimal/>
               </q-popup-proxy>
             </q-icon>
           </template>
@@ -53,7 +62,7 @@
         <q-btn 
           :label="index != undefined ? 'Save!' : 'Create!'" 
           class="full-width" 
-          :color="isNight ? 'dark' : 'primary'" 
+          :color="isNight ? 'blue-grey-10' : 'primary'" 
           @click="submit" 
           id="save-btn"
         />
@@ -117,7 +126,6 @@ export default {
 
   methods:{
     swipe(){
-      console.log("ae")
       this.$router.push('/')
     },
 
@@ -186,12 +194,6 @@ export default {
         var data = new Date(e)
         this.form.date = data
       }
-    },
-
-    isNight(){
-      var now = new Date();
-      var formated = parseInt(date.formatDate(now, 'H'))
-      return (formated > 18 || formated < 7 )
     },
 
     fuels(){

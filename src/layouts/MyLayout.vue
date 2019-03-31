@@ -53,8 +53,7 @@
           aria-label="add"
           v-if="$route.path == '/'"
           to="/tracks/new"
-          :dark="isNight"
-          :color="isNight ? 'dark' : 'primary'"
+          :color="isNight ? 'blue-grey-10' : 'primary'"
         >
           <q-icon name="add" />
         </q-btn>
@@ -95,12 +94,6 @@ export default {
   },
 
   computed:{
-    isNight(){
-      var now = new Date();
-      var formated = parseInt(date.formatDate(now, 'H'))
-      return (formated > 18 || formated < 7 )
-    },
-
     title(){
       if(this.$route.path == '/') return 'Gas Track Quasar'
 

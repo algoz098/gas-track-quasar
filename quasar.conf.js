@@ -5,7 +5,8 @@ module.exports = function (ctx) {
     // app plugins (/src/plugins)
     boot: [
       'axios',
-      'vmoney'
+      'vmoney',
+      'isNight'
     ],
     css: [
       'app.styl'

@@ -9,7 +9,7 @@
   </q-page>
 
   <q-page v-touch-swipe.mouse.left.right="swipe" v-else>
-    <q-list bordered padding>
+    <q-list :dark="isNight" separator  padding>
       <q-item-label header>Your track list</q-item-label>
 
       <q-item >
@@ -24,8 +24,6 @@
             </q-item-label>
         </q-item-section>
       </q-item>
-
-      <q-separator spaced />
 
       <q-item 
         clickable 
@@ -42,6 +40,7 @@
 
         <q-item-section side top>
           <q-item-label caption v-if="item.km_lt">{{item.km_lt}} km/lt</q-item-label>
+          <q-item-label caption v-else>- km/lt</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -61,7 +60,7 @@ export default {
     action(index){
       this.$q.bottomSheet({
         title: 'What u doin?',
-
+        color: 'primary',
         actions: [
           {
             label: 'Delete this',
@@ -101,12 +100,6 @@ export default {
   },
 
   computed:{
-    isNight(){
-      var now = new Date();
-      var formated = parseInt(date.formatDate(now, 'H'))
-      return (formated > 18 || formated < 7 )
-    },
-    
     total_effectness(){
       if(!this.fuels.length) return 0
       if(!this.fuels.filter(e => e.km_lt).length) return 0
