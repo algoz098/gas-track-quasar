@@ -7,6 +7,7 @@
       >
         <q-input 
         id="km_actual"
+          class="full-width "
         type="tel" label="Actual Car KM..." v-model="form.km_actual" />
       </q-field>
 
@@ -15,6 +16,7 @@
         class="full-width q-my-md"
       >
         <q-input 
+          class="full-width "
         type="tel" label="Fuel lts add..." v-money="lts" v-model="form.lts_add" id="lts_add" />
       </q-field>
 
@@ -23,6 +25,7 @@
         class="full-width q-my-md"
       >
         <q-input 
+          class="full-width "
         type="tel" label="Price..."  v-money="lts" v-model="form.price" id="price" />
       </q-field>
 
@@ -31,11 +34,12 @@
           class="full-width q-my-md"
       >
         <q-input 
+          class="full-width "
           label="Total:" readonly v-model="form.total" id="total" />
       </q-field>
 
       <q-field
-        class="q-my-md"
+        class="q-my-md full-width"
         :dark="isNight"
       >
         <q-input 

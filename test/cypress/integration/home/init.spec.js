@@ -1,5 +1,4 @@
 import * as ctx from  '../../../../quasar.conf.js'
-import {LocalStorage} from 'quasar'
 
 describe('Landing', () => {
   beforeEach(() => {
