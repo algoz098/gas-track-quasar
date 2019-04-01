@@ -24,14 +24,112 @@
           dense
           round
           aria-label="clear"
+          id="clear-list"
           @click="askToClear"
           v-if="$route.path == '/'"
         >
           <q-icon name="clear_all" />
         </q-btn>
+
+        <q-btn
+          flat
+          dense
+          round
+          aria-label="help"
+          id="show-help"
+          @click="carouselHome.show = true"
+          v-if="$route.path == '/'"
+        >
+          <q-icon name="contact_support" />
+        </q-btn>
+
         
       </q-toolbar>
     </q-header>
+
+    <q-dialog 
+      v-model="carouselHome.show"
+      @hide="seenCarouselHome"
+    >
+      <q-carousel
+        transition-prev="slide-right"
+        transition-next="slide-left"
+        swipeable
+        animated
+        v-model="carouselHome.page"
+        control-color="primary"
+        navigation-icon="radio_button_unchecked"
+        navigation
+        padding
+        class=" full-width shadow-1 rounded-borders"
+        :class="isNight ? 'bg-blue-grey-10 text-primary' : 'bg-primary'"
+      >
+        <q-carousel-slide :name="1" class="column no-wrap flex-center">
+          <q-icon name="style" color="primary" size="56px" />
+
+          <div class="q-mt-md text-center">
+            Welcome! This is Gas Track Quasar!<br>
+
+            This should help you discover how much you spend in gas.<br>
+
+            <q-btn
+              round
+              id="next-slide"
+              aria-label="add"
+              @click="carouselHome.page++"
+              class="q-mt-md"
+              :color="isNight ? 'blue-grey-9' : 'primary'"
+            >
+              <q-icon name="arrow_right" />
+            </q-btn>
+          </div>
+        </q-carousel-slide>
+
+        <q-carousel-slide :name="2" class="column no-wrap flex-center">
+          <q-icon name="live_tv" color="primary" size="56px" />
+
+          <div class="q-mt-md text-center">
+            To use, click on that "<q-icon name="add" />" down there.<br>
+
+            Do this every time you refuel your vehicle.<br>
+            
+            <q-btn
+              round
+              id="next-slide"
+              aria-label="add"
+              @click="carouselHome.page++"
+              class="q-mt-md"
+              :color="isNight ? 'blue-grey-9' : 'primary'"
+            >
+              <q-icon name="arrow_right" />
+            </q-btn>
+          </div>
+        </q-carousel-slide>
+
+        <q-carousel-slide :name="3" class="column no-wrap flex-center">
+          <q-icon name="layers" color="primary" size="56px" />
+
+          <div class="q-mt-md text-center">
+            All tracks will be saved in the Cloud! But remember,<br>
+            
+            each device will have its own records
+
+            <br>
+
+            <q-btn
+              round
+              id="next-slide"
+              aria-label="add"
+              @click="carouselHome.show = false"
+              class="q-mt-md"
+              :color="isNight ? 'blue-grey-9' : 'primary'"
+            >
+              <q-icon name="thumb_up" />
+            </q-btn>
+          </div>
+        </q-carousel-slide>
+      </q-carousel>
+    </q-dialog>
 
     <q-page-sticky position="bottom-right" :offset="[32, 32]" style="z-index: 1" >
       <q-btn
@@ -62,22 +160,33 @@
 
 <script>
 import { openURL } from 'quasar'
-import { date } from 'quasar'
+import { 
+  date,
+  LocalStorage as $ls 
+} from 'quasar'
 
 export default {
   name: 'MyLayout',
   data () {
     return {
-      carouselHome: true
+      carouselHome: {
+        show: false,
+        page: 1
+      },
     }
   },
 
   created(){
-    
+    if(!$ls.getItem('carouselHome')) this.carouselHome.show = true 
+
     this.$store.dispatch('fuel/starting')
   },
   
   methods: {
+    seenCarouselHome(){
+      $ls.set('carouselHome', true)
+    },
+
     askToClear(){
       this.$q.dialog({
         title: 'Are you certain?',

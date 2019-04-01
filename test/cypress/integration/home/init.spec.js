@@ -1,8 +1,9 @@
 import * as ctx from  '../../../../quasar.conf.js'
+import {LocalStorage} from 'quasar'
 
 describe('Landing', () => {
   beforeEach(() => {
-    // cy.visit('/')
+    window.localStorage.setItem('carouselHome', true)
   })
 
   it('assert that <title> is correct', () => {
@@ -92,5 +93,25 @@ describe('Landing', () => {
     cy.get('#save-btn').click()
 
     cy.get('.q-item__label').contains('at 200kms add 1,00Lts')
+  })
+
+  
+  it('clear list', () => {
+    cy.visit('/')
+
+    cy.get('#add-track-btn').click()
+    cy.get('#km_actual input').type('100')
+    cy.get('#lts_add input').type('100')
+    cy.get('#price input').type('400')
+    cy.get('#total input').should('have.value', '4.00')
+    cy.get('#save-btn').click()
+    cy.wait(300)
+    cy.get('.q-item__label').contains('at 100kms add 1,00Lts')
+
+    cy.get('#clear-list').click()
+    cy.get('.q-dialog').contains('This will clear the tracks you have, but just in you device')
+    cy.get('.q-btn').contains('OK').click()
+    cy.get('.q-item__label').should('not.be.visible')
+
   })
 })
