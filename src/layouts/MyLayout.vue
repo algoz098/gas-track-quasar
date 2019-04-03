@@ -29,7 +29,16 @@
         >
           <q-icon name="clear_all" />
         </q-btn>
-        
+
+        <q-btn
+          flat
+          dense
+          round
+          aria-label="show-uid"
+          @click="showUid"
+        >
+          UID
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -62,7 +71,10 @@
 
 <script>
 import { openURL } from 'quasar'
-import { date } from 'quasar'
+import { 
+  date,
+  LocalStorage as $ls,
+} from 'quasar'
 
 export default {
   name: 'MyLayout',
@@ -78,6 +90,13 @@ export default {
   },
   
   methods: {
+    showUid(){
+      this.$q.dialog({
+        title: 'Your UID',
+        message: $ls.getItem('api_token'),
+      })
+    },
+
     askToClear(){
       this.$q.dialog({
         title: 'Are you certain?',
