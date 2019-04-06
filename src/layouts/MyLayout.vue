@@ -4,6 +4,8 @@
       <q-toolbar
         :class="isNight ? 'bg-blue-grey-10 text-white' : 'bg-primary'"
       >
+        <q-btn dense flat round icon="menu" @click="left = !left" />
+
         <q-btn
           flat
           dense
@@ -19,30 +21,18 @@
           {{title}}
         </q-toolbar-title>
         
-        <q-btn
-          flat
-          dense
-          round
-          aria-label="clear"
-          @click="askToClear"
-          v-if="$route.path == '/'"
-        >
-          <q-icon name="clear_all" />
-        </q-btn>
-
-        <q-btn
-          flat
-          dense
-          round
-          aria-label="show-uid"
-          @click="showUid"
-        >
-          UID
-        </q-btn>
       </q-toolbar>
     </q-header>
+    
+    <q-drawer 
+      :content-class="isNight ? 'bg-blue-grey-10 text-white' : ''"
+      v-model="left" 
+      side="left" 
+    >
+      <side-menu />
+    </q-drawer>
 
-    <q-page-sticky position="bottom-right" :offset="[32, 32]" style="z-index: 1" >
+    <q-page-sticky position="bottom-right" :offset="[32, 32]" style="z-index: 1" v-if="!scrolled">
       <q-btn
           round
           id="add-track-btn"
@@ -57,6 +47,8 @@
     </q-page-sticky>
 
     <q-page-container :class="{'bg-black': isNight}">
+      <q-scroll-observer @scroll="scrollHandler" />
+
       <transition
         name="transitions"
         enter-active-class="animated slideInRight"
@@ -70,7 +62,9 @@
 </template>
 
 <script>
+import sideMenu from '../components/sideMenu'
 import { openURL } from 'quasar'
+
 import { 
   date,
   LocalStorage as $ls,
@@ -78,39 +72,28 @@ import {
 
 export default {
   name: 'MyLayout',
+
+  components:{
+    sideMenu
+  },
+
   data () {
     return {
+      scrolled: false,
+      left: false,
       carouselHome: true
     }
   },
 
   created(){
-    
     this.$store.dispatch('fuel/starting')
   },
   
-  methods: {
-    showUid(){
-      this.$q.dialog({
-        title: 'Your UID',
-        message: $ls.getItem('api_token'),
-      })
-    },
-
-    askToClear(){
-      this.$q.dialog({
-        title: 'Are you certain?',
-        message: 'This will clear the tracks you have, but just in you device',
-      
-        cancel: {
-          color: 'negative'
-        },
-        
-        persistent: true
-      }).onOk(() => {
-        this.$store.dispatch('fuel/clear')
-      })
-    },
+  methods:{
+    scrollHandler(e){
+      if(e.position > 3) this.scrolled = true
+      else if (e.position < 3) this.scrolled = false
+    }
   },
 
   computed:{

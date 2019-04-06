@@ -70,7 +70,6 @@ export const saveRemote = async (store, data) => {
         if (data.filter(e => !e.saved).length) $nt.create('Saved to cloud')
 
         data.filter(e => !e.saved).forEach(e => {
-            
             e.saved = 'true'
         });
         
@@ -174,4 +173,22 @@ export const remove = async (store, obj) => {
     store.commit('set', data)
 
     return data
+};
+
+export const calcWheeled = (store, obj) => {
+    let data = JSON.parse(JSON.stringify(store.state.data))
+    let item = data[obj.index]
+    let after = obj.after ? data[obj.after] : data[obj.index + 1]
+
+    if(!obj || !data || !item || !after) return
+
+    item.saved = null
+    item.wheeled = parseFloat((parseFloat(after.km_actual) - parseFloat(item.km_actual)).toFixed(2))
+    item.km_lt = parseFloat((item.wheeled / parseFloat(after.lts_add.replace(',', '.'))).toFixed(2))
+    
+    $ls.set('fuels', JSON.stringify(data))
+    
+    store.commit('set', data)
+
+    return item
 };
