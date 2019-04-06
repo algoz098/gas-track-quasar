@@ -1,5 +1,5 @@
 <template>
-  <q-page class="docs-input row justify-center" v-touch-swipe.mouse.left.right="swipe">
+  <q-page class="docs-input row justify-center" v-touch-swipe.mouse.left="swipe">
     <div style="width: 500px; max-width: 90vw;">
       <q-field
         :dark="isNight"
@@ -31,8 +31,23 @@
 
       <q-field
         :dark="isNight"
-          class="full-width q-my-md"
+        class="full-width q-my-md"
       >
+        <q-popup-edit 
+          :class="isNight ? 'bg-blue-grey-10' : ''" 
+          title="Be carefull, this will override the calculation"
+          v-model="form.total"
+          buttons
+        >
+          <q-input 
+            type="tel"
+            v-model="form.total" 
+            v-money="lts" 
+            dense 
+            autofocus 
+          />
+        </q-popup-edit>
+
         <q-input 
           class="full-width "
           label="Total:" readonly v-model="form.total" id="total" />
@@ -178,27 +193,32 @@ export default {
     },
 
     async submit(){
-      if(this.fuels && this.fuels.length && this.fuels[this.fuels.length - 1]){
-        var index = this.fuels.length - 1
+      // if(this.fuels && this.fuels.length && this.fuels[this.fuels.length - 1]){
+        // let index = this.fuels.findIndex(e => e == this.fuel)
+        // console.log(index)
+      //   var index = this.fuels.length - 1
 
-        if(this.index) index = this.index - 1
+      //   if(this.index) index = this.index - 1
 
-        var copy = JSON.parse(JSON.stringify(this.fuels))
+      //   var copy = JSON.parse(JSON.stringify(this.fuels))
 
-        copy[index].saved = null
-        copy[index].wheeled = parseFloat((parseFloat(this.form.km_actual) - parseFloat(copy[index].km_actual)).toFixed(2))
-        copy[index].km_lt = parseFloat((copy[index].wheeled / parseFloat(this.form.lts_add.replace(',', '.'))).toFixed(2))
+      //   copy[index].saved = null
+      //   copy[index].wheeled = parseFloat((parseFloat(this.form.km_actual) - parseFloat(copy[index].km_actual)).toFixed(2))
+      //   copy[index].km_lt = parseFloat((copy[index].wheeled / parseFloat(this.form.lts_add.replace(',', '.'))).toFixed(2))
         
-        await $ls.set('fuels', JSON.stringify(copy))
+      //   await $ls.set('fuels', JSON.stringify(copy))
         
-        this.$store.commit('fuel/set', copy)
-      }
+      //   this.$store.commit('fuel/set', copy)
+      // }
+
 
       if(this.index != undefined){
         await this.$store.dispatch('fuel/update', {form: this.form, index: this.index})
+        await this.$store.dispatch('fuel/calcWheeled', {index: this.index})
 
       } else {
         await this.$store.dispatch('fuel/save', this.form)
+        await this.$store.dispatch('fuel/calcWheeled', {index: this.fuels.length - 2})
       }
 
       this.$router.push('/')

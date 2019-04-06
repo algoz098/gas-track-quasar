@@ -8,7 +8,7 @@
     />
   </q-page>
 
-  <q-page v-touch-swipe.mouse.left.right="swipe" v-else>
+  <q-page v-touch-swipe.mouse.left="swipe" v-else>
     <q-list :dark="isNight" separator  padding>
       <q-item-label header>Your track list</q-item-label>
 
@@ -78,6 +78,16 @@ export default {
             icon: 'edit', // specify ONLY IF using icon
             handler: () =>  {
               this.$router.push({path: '/tracks/new', query: {index: index}})
+            }
+          },
+
+          {
+            label: 'Recalculate km/lt',
+            color: 'default',
+            icon: 'exposure_plus_1', // specify ONLY IF using icon
+            handler: async () =>  {
+              await this.$store.dispatch('fuel/calcWheeled', {index: index})
+              this.$store.dispatch('fuel/get')
             }
           },
         ],
