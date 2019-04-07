@@ -43,6 +43,7 @@ export const getRemote = async (store) => {
 };
 
 export const removeRemote = async (store, id) => {
+    console.log("remove", id )
     if(!id) return null
 
     if(!navigator.connection.type || navigator.connection.type == 'none') return null
@@ -59,13 +60,15 @@ export const removeRemote = async (store, id) => {
     return data
 };
 
-export const saveRemote = async (store, data) => {
+export const saveRemote = async (store) => {
+    let data = store.state.data
+    if(!data) data = JSON.parse($ls.getItem('fuels'))
     if(!data) return
 
     if(!navigator.connection.type || navigator.connection.type == 'none') return data
     
     try {
-        await axios.post(`${store.state.endpoint}gas-track/save`, data.filter(e => !e.saved))
+        await axios.post(`${store.state.endpoint}gas-track/`, data.filter(e => !e.saved))
         
         if (data.filter(e => !e.saved).length) $nt.create('Saved to cloud')
 
@@ -175,7 +178,7 @@ export const remove = async (store, obj) => {
     return data
 };
 
-export const calcWheeled = (store, obj) => {
+export const calcWheeled = async (store, obj) => {
     let data = JSON.parse(JSON.stringify(store.state.data))
     let item = data[obj.index]
     let after = obj.after ? data[obj.after] : data[obj.index + 1]

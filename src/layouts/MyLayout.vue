@@ -4,7 +4,7 @@
       <q-toolbar
         :class="isNight ? 'bg-blue-grey-10 text-white' : 'bg-primary'"
       >
-        <q-btn dense flat round icon="menu" @click="left = !left" />
+        <q-btn dense flat round icon="menu" @click="left = !left" id="show-side-menu" />
 
         <q-btn
           flat

@@ -1,14 +1,15 @@
 {
   "name": "gas-track-quasar",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "A gas spend tracking app in quasar",
   "productName": "Gas Track Quasar",
   "cordovaId": "br.com.webgs.gastrackquasar",
   "author": "Artur Sena <algoz098@gmail.com>",
   "private": true,
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0",
-    "sign": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore C:\\Users\\Artur\\Documents\\gas-track-quasar\\src-cordova\\platforms\\android\\app\\build\\outputs\\apk\\release\\app-release-unsigned.apk gastrack_key"
+    "test": "cypress run --headed --project ./ --browser electron",
+    "sign": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore C:\\Users\\Artur\\Documents\\gas-track-quasar\\src-cordova\\platforms\\android\\app\\build\\outputs\\apk\\release\\app-release-unsigned.apk gastrack_key",
+    "zipalign": ".\\zipalign.exe -v 4 C:\\Users\\Artur\\Documents\\gas-track-quasar\\src-cordova\\platforms\\android\\app\\build\\outputs\\apk\\release\\app-release-unsigned.apk zipalign.apk"
   },
   "dependencies": {
     "@quasar/extras": "^1.1.1",

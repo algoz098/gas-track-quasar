@@ -7,6 +7,7 @@
       >
         <q-input 
         id="km_actual"
+          class="full-width "
         type="tel" label="Actual Car KM..." v-model="form.km_actual" />
       </q-field>
 
@@ -15,6 +16,7 @@
         class="full-width q-my-md"
       >
         <q-input 
+          class="full-width "
         type="tel" label="Fuel lts add..." v-money="lts" v-model="form.lts_add" id="lts_add" />
       </q-field>
 
@@ -23,6 +25,7 @@
         class="full-width q-my-md"
       >
         <q-input 
+          class="full-width "
         type="tel" label="Price..."  v-money="lts" v-model="form.price" id="price" />
       </q-field>
 
@@ -46,11 +49,12 @@
         </q-popup-edit>
 
         <q-input 
+          class="full-width "
           label="Total:" readonly v-model="form.total" id="total" />
       </q-field>
 
       <q-field
-        class="q-my-md"
+        class="q-my-md full-width"
         :dark="isNight"
       >
         <q-input 
@@ -189,25 +193,6 @@ export default {
     },
 
     async submit(){
-      // if(this.fuels && this.fuels.length && this.fuels[this.fuels.length - 1]){
-        // let index = this.fuels.findIndex(e => e == this.fuel)
-        // console.log(index)
-      //   var index = this.fuels.length - 1
-
-      //   if(this.index) index = this.index - 1
-
-      //   var copy = JSON.parse(JSON.stringify(this.fuels))
-
-      //   copy[index].saved = null
-      //   copy[index].wheeled = parseFloat((parseFloat(this.form.km_actual) - parseFloat(copy[index].km_actual)).toFixed(2))
-      //   copy[index].km_lt = parseFloat((copy[index].wheeled / parseFloat(this.form.lts_add.replace(',', '.'))).toFixed(2))
-        
-      //   await $ls.set('fuels', JSON.stringify(copy))
-        
-      //   this.$store.commit('fuel/set', copy)
-      // }
-
-
       if(this.index != undefined){
         await this.$store.dispatch('fuel/update', {form: this.form, index: this.index})
         await this.$store.dispatch('fuel/calcWheeled', {index: this.index})
@@ -216,6 +201,8 @@ export default {
         await this.$store.dispatch('fuel/save', this.form)
         await this.$store.dispatch('fuel/calcWheeled', {index: this.fuels.length - 2})
       }
+
+      await this.$store.dispatch('fuel/get')
 
       this.$router.push('/')
     }
