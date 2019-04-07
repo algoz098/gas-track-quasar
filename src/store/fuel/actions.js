@@ -65,7 +65,7 @@ export const saveRemote = async (store, data) => {
     if(!navigator.connection.type || navigator.connection.type == 'none') return data
     
     try {
-        await axios.post(`${store.state.endpoint}gas-track/save`, data.filter(e => !e.saved))
+        await axios.post(`${store.state.endpoint}gas-track/`, data.filter(e => !e.saved))
         
         if (data.filter(e => !e.saved).length) $nt.create('Saved to cloud')
 
