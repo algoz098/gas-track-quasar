@@ -6,6 +6,7 @@
         </q-item>
 
         <q-item 
+            id="clear-list"
             clickable
             v-ripple 
             @click="askToClear"
@@ -18,6 +19,7 @@
         </q-item>
         
         <q-item 
+            id="show-uid"
             clickable
             v-ripple 
             @click="showUid"
@@ -29,6 +31,7 @@
         </q-item>
 
         <q-item 
+            id="show-rate-us"
             clickable
             v-ripple 
             @click="voteForm.show = true"
@@ -59,9 +62,10 @@
                     class="full-width q-my-md"
                 >
                     <q-input 
+                        id="rate-us-comment"
                         type="textarea"
                         class="full-width "
-                     label="More to say?" v-model="voteForm.comment" id="price" />
+                         label="More to say?" v-model="voteForm.comment" />
                 </q-field>
             </q-card-section>
 
